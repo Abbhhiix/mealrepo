@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meal Planner</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'planner/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Meal Planner</h1>
+        <form method="POST" action="{% url 'generate_meal_plan' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+
+        {% if recipes %}
+        <h2>Your Meal Plan</h2>
+        <ul>
+            {% for recipe in recipes %}
+            <li>{{ recipe.name }}: {{ recipe.ingredients }} (Cost: {{ recipe.cost }})</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</body>
+</html>
+

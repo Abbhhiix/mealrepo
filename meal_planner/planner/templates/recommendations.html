@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe Recommendations</title>
+</head>
+<body>
+    <h1>Recommended Recipes</h1>
+    <ul>
+        {% for recipe in recommendations %}
+            <li>
+                <h2>{{ recipe.title }}</h2>
+                <p>Ingredients: {% for ingredient in recipe.extendedIngredients %} {{ ingredient.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+                <p>Instructions: {{ recipe.instructions }}</p>
+                <p>Rating: {{ recipe.rating }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

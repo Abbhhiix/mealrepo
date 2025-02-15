@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meal Plan</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'planner/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Meal Planner</h1>
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form method="POST" action="{% url 'generate_meal_plan' %}">
+            {% csrf_token %}
+            <label for="budget">Enter your budget (in INR):</label>
+            <input type="number" id="budget" name="budget" step="0.01" value="{{ form.budget.value|default:'' }}">
+            <label for="dietary_preference">Dietary Preference:</label>
+            <select id="dietary_preference" name="dietary_preference">
+                <option value="vegetarian" {% if form.dietary_preference.value == "vegetarian" %}selected{% endif %}>Vegetarian</option>
+                <option value="non-vegetarian" {% if form.dietary_preference.value == "non-vegetarian" %}selected{% endif %}>Non-Vegetarian</option>
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+        {% if recipes %}
+            <h2>Your Meal Plan</h2>
+            <ul>
+                {% for recipe in recipes %}
+                    <li>{{ recipe.name }}: {{ recipe.ingredients }} (Cost: {{ recipe.cost }})</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No recipes found for the given budget and dietary preference.</p>
+        {% endif %}
+        <a href="{% url 'account_logout' %}">Logout</a>
+    </div>
+</body>
+</html>
